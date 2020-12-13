@@ -1,0 +1,13 @@
+.login_bg {
+  height: 100%;
+  padding-top: 4%;
+  background-image: url('../image/login.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  overflow: 'auto';height: '100vh';
+}
+body,html,#app{
+    width:100% !important;
+    height:100% !important;
+}
