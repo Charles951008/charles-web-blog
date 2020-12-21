@@ -1,7 +1,7 @@
 <template>
     <div class="login_bg">
         <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
-            <FormItem prop="user">111
+            <FormItem prop="user">
                 <Input type="text" v-model="formInline.user" placeholder="Username">
                     <Icon type="ios-person-outline" slot="prepend"></Icon>
                 </Input>
@@ -36,11 +36,20 @@
                 }
             }
         },
+        // {name:this.formInline.user,password:this.formInline.password}
         methods: {
             handleSubmit(name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.$Message.success('Success!');
+                        this.$axios.get("/user/login?name="+this.formInline.user+"&password="+this.formInline.password).then(res=>{
+                            if(res.status){
+                                this.$Message.success('Success!');
+                                this.$router.push("/mainPage");
+                            }else{
+                                this.$Message.error('Fail!');
+                            }
+                        })
+                        // this.$Message.success('Success!');
                     } else {
                         this.$Message.error('Fail!');
                     }

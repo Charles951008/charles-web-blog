@@ -27,5 +27,10 @@ export default new Router({
             name: 'login',
             component: () => import('@/components/Login')
         },
+        {
+          path: '/mainPage',
+          name: 'mainPage',
+          component: () => import('@/components/MainPage')
+        },
     ]
 })
