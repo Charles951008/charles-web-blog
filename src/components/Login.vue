@@ -1,7 +1,7 @@
 <template>
     <div class="login_bg">
         <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
-            <FormItem prop="user">
+            <FormItem prop="user">111
                 <Input type="text" v-model="formInline.user" placeholder="Username">
                     <Icon type="ios-person-outline" slot="prepend"></Icon>
                 </Input>
