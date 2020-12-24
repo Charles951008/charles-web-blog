@@ -28,9 +28,16 @@ export default new Router({
             component: () => import('@/components/Login')
         },
         {
-          path: '/mainPage',
-          name: 'mainPage',
-          component: () => import('@/components/MainPage')
+            path: '/mainPage',
+            name: 'mainPage',
+            component: () => import('@/components/MainPage'),
+            children:[
+                {
+                    path: '/blogManage',
+                    name: 'blogManage',
+                    component: () => import('@/components/blogOperation/BlogManager'),
+                }
+            ]
         },
     ]
 })

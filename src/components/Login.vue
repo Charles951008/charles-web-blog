@@ -1,60 +1,110 @@
 <template>
     <div class="login_bg">
-        <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
-            <FormItem prop="user">
-                <Input type="text" v-model="formInline.user" placeholder="Username">
-                    <Icon type="ios-person-outline" slot="prepend"></Icon>
-                </Input>
-            </FormItem>
-            <FormItem prop="password">
-                <Input type="password" v-model="formInline.password" placeholder="Password">
-                    <Icon type="ios-lock-outline" slot="prepend"></Icon>
-                </Input>
-            </FormItem>
-            <FormItem>
-                <Button type="primary" @click="handleSubmit('formInline')">登入</Button>
-            </FormItem>
-        </Form>
+        <div class="loginBox">
+            <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="用户名" prop="username">
+                <el-input v-model="ruleForm.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="password">
+                <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="年龄" prop="age">
+                <el-input v-model.number="ruleForm.age"></el-input>
+            </el-form-item> -->
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('ruleForm')">登陆</el-button>
+                <el-button @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+            </el-form>
+        </div>
     </div>
 </template>
+
 <script>
-    export default {
-        data () {
-            return {
-                formInline: {
-                    user: '',
-                    password: ''
-                },
-                ruleInline: {
-                    user: [
-                        { required: true, message: '请输入用户名', trigger: 'blur' }
-                    ],
-                    password: [
-                        { required: true, message: '请输入密码', trigger: 'blur' },
-                        { type: 'string', min: 6, message: '密码至少输入六位字符', trigger: 'blur' }
-                    ]
-                }
-            }
+  export default {
+    data() {
+    //   var checkAge = (rule, value, callback) => {
+    //     if (!value) {
+    //       return callback(new Error('年龄不能为空'));
+    //     }
+    //     setTimeout(() => {
+    //       if (!Number.isInteger(value)) {
+    //         callback(new Error('请输入数字值'));
+    //       } else {
+    //         if (value < 18) {
+    //           callback(new Error('必须年满18岁'));
+    //         } else {
+    //           callback();
+    //         }
+    //       }
+    //     }, 1000);
+    //   };
+    //   var validatePass = (rule, value, callback) => {
+    //     if (value === '') {
+    //       callback(new Error('请输入密码'));
+    //     } else {
+    //       if (this.ruleForm.checkPass !== '') {
+    //         this.$refs.ruleForm.validateField('checkPass');
+    //       }
+    //       callback();
+    //     }
+    //   };
+    //   var validatePass2 = (rule, value, callback) => {
+    //     if (value === '') {
+    //       callback(new Error('请再次输入密码'));
+    //     } else if (value !== this.ruleForm.pass) {
+    //       callback(new Error('两次输入密码不一致!'));
+    //     } else {
+    //       callback();
+    //     }
+    //   };
+      return {
+        ruleForm: {
+          username: '',
+          password: '',
+        //   age: ''
         },
-        // {name:this.formInline.user,password:this.formInline.password}
-        methods: {
-            handleSubmit(name) {
-                this.$refs[name].validate((valid) => {
-                    if (valid) {
-                        this.$axios.get("/user/login?name="+this.formInline.user+"&password="+this.formInline.password).then(res=>{
-                            if(res.status){
-                                this.$Message.success('Success!');
-                                this.$router.push("/mainPage");
-                            }else{
-                                this.$Message.error('Fail!');
-                            }
-                        })
-                        // this.$Message.success('Success!');
-                    } else {
-                        this.$Message.error('Fail!');
-                    }
-                })
-            }
-        }
+        // rules: {
+        //   pass: [
+        //     { validator: validatePass, trigger: 'blur' }
+        //   ],
+        //   checkPass: [
+        //     { validator: validatePass2, trigger: 'blur' }
+        //   ],
+        //   age: [
+        //     { validator: checkAge, trigger: 'blur' }
+        //   ]
+        // }
+      };
+    },
+    methods: {
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            // alert('submit!');
+            this.$axios.get("/user/login?name="+this.ruleForm.username+"&password="+this.ruleForm.password).then(res=>{
+                if(res.status==true){
+                    this.$router.push("/mainPage");
+                }
+            })
+            
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
     }
+  }
 </script>
+<style scoped>
+.loginBox{
+    width:30%;
+    height: 40%;
+    margin: 0 auto;
+    padding-top: 16%;
+}
+</style>
